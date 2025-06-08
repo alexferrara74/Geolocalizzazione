@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+# Configurazione delle API (URL del progetto)
+api:
+  base-url: http://localhost:8089/manutenzione
+  users-url: ${api.base-url}/users
+  products-url: ${api.base-url}/products
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 12MB
+      max-request-size: 12MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/manutenzione
+    username: root
+    password: Cavese1919
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/realm
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+springdoc:
+  api-docs:
+    enabled: true
+

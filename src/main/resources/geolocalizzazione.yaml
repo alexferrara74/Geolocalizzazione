@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: Swagger Manutenzione - OpenAPI 3.0
+  version: 1.0.11
+tags:
+
+  - name: Poi
+    description: Gestione dei Poi
+  - name: Percorso
+    description: Gestione dei percorsi
+
+paths:
+
+  /Poi:
+    post:
+      tags:
+        - Poi
+      summary: Inserimento nuovo Poi
+      operationId: createPoi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoiDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Poi not found
+    get:
+      tags:
+        - Poi
+      summary: Leggi tutti i Poi
+      operationId: getAllPoi
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PoiDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Poi not found
+  /Percorso:
+    post:
+      tags:
+        - Percorso
+      summary: Creazione Percorso
+      description: Creazione Percorso
+      operationId: createPercorso
+      parameters:
+        - name: id_veicolo
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: percorsoBreve
+          in: query
+          required: true
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PoiDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PercorsoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+  /Percorso/{id}:
+    delete:
+      summary: Elimina un percorso
+      description: Elimina un percorso dato il suo id
+      tags:
+        - Percorso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Percorso eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Percorso non trovato
+  /Percorso/{id}/archivia:
+    patch:
+      summary: Archivia un percorso
+      description: Archivia un percorso dato il suo id
+      tags:
+        - Percorso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Archivia eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Percorso non trovato
+  /Percorso/ricerca:
+    post:
+      tags:
+        - Percorso
+      summary: Leggi percorsi
+      operationId: getPercorsiByFilter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PercorsoSearchDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenerazionePercorsoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Compagnia not found
+  /Percorso/salvaPercorso:
+    post:
+      tags:
+        - Percorso
+      summary: Salvataggio Percorso
+      description: Salvataggio Percorso
+      operationId: savePercorso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerazionePercorsoDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerazionePercorsoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+
+components:
+  schemas:
+
+    PercorsoSearchDTO:
+      type: object
+      properties:
+        automezzo:
+          type: integer
+        autista:
+          type: integer
+        data :
+          type: string
+          format: date
+
+    GenerazionePercorsoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        percorso:
+          $ref: '#/components/schemas/PercorsoDTO'
+        automezzo:
+          type: integer
+          format: int32
+        autista:
+          type: integer
+          format: int32
+
+    PoiDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        descrizione:
+          type: string
+        indirizzo:
+          type: string
+        latitudine:
+          type: number
+          format: double
+        longitudine:
+          type: number
+          format: double
+        ordine:
+          type: integer
+          format: int32
+
+    RouteResponseDTO:
+      type: object
+      properties:
+        distance:
+          type: number
+          format: double
+          description: Distanza totale (in km)
+        duration:
+          type: number
+          format: double
+          description: Durata totale (in secondi)
+        cost:
+          type: number
+          format: float
+          description: Costo totale
+        legs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegDTO'
+          description: Lista di leg (segmenti del percorso)
+        geometry:
+          type: string
+          description: Geometria del percorso in formato polilinea WKT o GeoJSON
+
+    LegDTO:
+      type: object
+      properties:
+        maneuvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManeuverDTO'
+          description: Dettagli delle manovre del percorso
+
+    TipoVeicoliDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        key:
+          type: string
+        value:
+          type: string
+
+    ManeuverDTO:
+      type: object
+      properties:
+        instruction:
+          type: string
+          description: Istruzione per questa manovra (es. "Turn left onto Via Nazionale")
+        distance:
+          type: number
+          format: float
+          description: Distanza di questa manovra
+        location:
+          type: array
+          items:
+            type: number
+            format: double
+          description: Coordinate della manovra (lat, lon)
+
+    PercorsoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        distance:
+          type: number
+          format: double
+        duration:
+          type: number
+          format: double
+        shape:
+          type: array
+          items:
+            type: string
+        dataCreazione:
+          type: string
+          format: date
+        poiPartenza:
+          $ref: '#/components/schemas/PoiDTO'
+        pois:
+          type: array
+          items:
+            $ref: '#/components/schemas/PoiDTO'
+        sigla:
+          type: string

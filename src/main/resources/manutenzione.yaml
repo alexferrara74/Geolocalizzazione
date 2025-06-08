@@ -1,0 +1,1019 @@
+openapi: 3.0.3
+info:
+  title: Swagger Manutenzione - OpenAPI 3.0
+  version: 1.0.11
+tags:
+  - name: Automezzo
+    description: Veicoli della flotta aziendale
+  - name: Assicurazione
+    description: Assicurazione per ogni veicolo
+  - name: Revisione
+    description: Operations about revisioni
+  - name: Atp
+    description: Operations about atp
+  - name: Cassone
+    description: Operations about cassone
+  - name: Manutenzione
+    description: Operations about manutenzione
+  - name: Azienda Meccanica
+    description: Operations about azienda meccanica
+  - name: Compagnia Assicurativa
+    description: Operations about Compagnia Assicurativa
+  - name: Autista
+    description: Operations about autista
+  - name: Patente
+    description: Operations about patente
+  - name: Documenti
+    description: Gestione dei file pfd
+  - name: Config
+    description: update delle configurazioni
+paths:
+  /Automezzo:
+    put:
+      tags:
+        - Automezzo
+      summary: Aggiornamento automezzo
+      description: Aggiornamento automezzo
+      operationId: updateAutomezzo
+      requestBody:
+        description: Update an existent veicols
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomezzoDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    post:
+      tags:
+        - Automezzo
+      summary: Inserimento nuovo automezzo
+      description: Inserimento nuovo automezzo
+      operationId: createAutomezzo
+      requestBody:
+        description: Update an existent veicols
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomezzoDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    get:
+      tags:
+        - Automezzo
+      summary: Leggi tutti gli automezzi
+      description: Leggi tutti gli automezzi
+      operationId: getAllAutomezzi
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Automezzo/{id}:
+    get:
+      tags:
+        - Automezzo
+      summary: Leggi tutti gli automezzi
+      description: Leggi tutti gli automezzi
+      operationId: getAutomezzoById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    patch:
+      tags:
+        - Automezzo
+      summary: Archivia automezzo
+      description: Archivia automezzo
+      operationId: archiviaAutomezzoById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    delete:
+      summary: Elimina un automezzo
+      description: Elimina un automezzo esistente in base all'ID
+      tags:
+        - Automezzo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Automezzo eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Automezzo non trovato
+  /Automezzo/numeri:
+    get:
+      tags:
+        - Automezzo
+      summary: Recupera i numeri disponibili per la configurazione dei veicoli
+      description: Recupera i numeri disponibili per la configurazione dei veicoli
+      operationId: getNumeriDisponibili
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        '401':
+          description: unauthorized
+        '500':
+          description: Internal Server Error
+  /Automezzo/tipoVeicoli:
+    get:
+      tags:
+        - Automezzo
+      summary: Recupera le tipologie di veicoli disponibili
+      description: Recupera le tipologie di veicoli disponibili
+      operationId: getTipoVeicoli
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoVeicoliDTO'
+        '401':
+          description: unauthorized
+        '500':
+          description: Internal Server Error
+  /Autista:
+    post:
+      tags:
+        - Autista
+      summary: Inserimento nuovo autista
+      description: Inserimento nuovo autista
+      operationId: createAutista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutistaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutistaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    get:
+      tags:
+        - Autista
+      summary: Leggi tutti gli autisti
+      description: Leggi tutti gli autisti
+      operationId: getAllAutisti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutistaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Autisti not found
+
+  /Autista/patente:
+    get:
+      tags:
+        - Autista
+      summary: Leggi tutti gli autisti
+      description: Leggi tutti gli autisti
+      operationId: getAutistiByPatente
+      parameters:
+        - name: idPatente
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutistaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Autisti not found
+  /Assicurazione:
+    put:
+      tags:
+        - Assicurazione
+      summary: Aggiornamento assicurazione
+      description: Aggiornamento assicurazione
+      operationId: updateAssicurazione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssicurazioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Assicurazione not found
+    post:
+      tags:
+        - Assicurazione
+      summary: Inserimento nuova assicurazione
+      operationId: createAssicurazione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssicurazioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    get:
+      tags:
+        - Assicurazione
+      summary: Leggi tutte le Assicurazioni
+      operationId: getAllAssicurazione
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Assicurazione/{id}:
+    get:
+      tags:
+        - Assicurazione
+      summary: Recupera assicurazione tramite id
+      operationId: getAssicurazioneById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Assicurazione/Automezzo/{numero}:
+    get:
+      tags:
+        - Assicurazione
+      summary: Recupera assicurazioni collegate all'automezzo
+      operationId: getAssicurazioneByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Patente:
+    get:
+      tags:
+        - Patente
+      summary: Recupera tutte le patenti
+      operationId: getPatentiAll
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PatenteDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+
+  /CompagniaAssicurativa:
+    put:
+      tags:
+        - Compagnia Assicurativa
+      summary: Aggiornamento compagnia assicurativa
+      description: Aggiornamento compagnia assicurativa
+      operationId: updateCompagniaAssicurativa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Compagnia not found
+    post:
+      tags:
+        - Compagnia Assicurativa
+      summary: Inserimento nuova Compagnia Assicurativa
+      operationId: createCompagniaAssicurativa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Compagnia not found
+    get:
+      tags:
+        - Compagnia Assicurativa
+      summary: Leggi tutte le Compagnia Assicurativa
+      operationId: getAllCompagniaAssicurativa
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Compagnia not found
+
+  /AziendaMeccanica:
+    put:
+      tags:
+        - Azienda Meccanica
+      summary: Aggiornamento Azienda Meccanica
+      description: Aggiornamento Azienda Meccanica
+      operationId: updateAziendaMeccanica
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AziendaMeccanicaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AziendaMeccanicaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Azienda not found
+    post:
+      tags:
+        - Azienda Meccanica
+      summary: Inserimento nuova Azienda Meccanica
+      operationId: createAziendaMeccanica
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AziendaMeccanicaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AziendaMeccanicaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+
+    get:
+      tags:
+        - Azienda Meccanica
+      summary: Leggi tutte le Azienda Meccanica
+      operationId: getAllAziendaMeccanica
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AziendaMeccanicaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Azienda not found
+
+
+  /Manutenzione:
+    put:
+      tags:
+        - Manutenzione
+      summary: Aggiornamento Manutenzione
+      description: Aggiornamento Manutenzione
+      operationId: updateManutenzione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManutenzioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManutenzioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Manutenzione not found
+    post:
+      tags:
+        - Manutenzione
+      summary: Inserimento nuovo Manutenzione
+      description: Inserimento nuovo Manutenzione
+      operationId: createManutenzione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManutenzioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManutenzioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Manutenzione not found
+    get:
+      tags:
+        - Manutenzione
+      summary: Leggi tutte le Manutenzioni
+      description: Leggi tutte le Manutenzione
+      operationId: getAllManutenzione
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ManutenzioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Manutenzione not found
+
+  /Manutenzione/Automezzo/{numero}:
+    get:
+      tags:
+        - Manutenzione
+      summary: Leggi tutte le manutenzioni dato un veicolo
+      description: Leggi tutte le manutenzioni dato un veicolo
+      operationId: getManutenzioniByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ManutenzioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Manutenzione not found
+
+  /Document:
+    post:
+      tags:
+        - Documenti
+      summary: Inserimento documento
+      description: Inserimento documento
+      operationId: insertDocument
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Il file da caricare
+                idRiferimento:
+                  type: integer
+                  format: int32
+                  description: ID dell'entità a cui è collegato il documento
+                tipo:
+                  type: string
+                  enum: [ASSICURAZIONE, REVISIONE, MANUTENZIONE, PERMESSO]
+                  description: Tipo di documento associato
+              required:
+                - file
+                - idRiferimento
+                - tipo
+      responses:
+        '200':
+          description: Documento caricato con successo'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+    get:
+      tags:
+        - Documenti
+      summary: Scarica documento
+      description: Scarica un file PDF tramite ID
+      operationId: downloadDocumento
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID del documento da scaricare
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Documento scaricato con successo
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Documento non trovato
+        '500':
+          description: Errore interno
+
+    delete:
+      tags:
+        - Documenti
+      summary: Elimina documento
+      description: Elimina un file dalla collezione
+      operationId: deleteDocumento
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID del documento da eliminare
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Documento eliminato con successo
+        '404':
+          description: Documento non trovato
+        '500':
+          description: Errore interno
+
+  /config:
+    get:
+      tags:
+        - Config
+      summary: Leggi tutte le configurazioni
+      description: Leggi tutte le configurazioni
+      operationId: getAllConfigurazioni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Config not found
+    put:
+      tags:
+        - Config
+      summary: Aggiornamento Config
+      description: Aggiornamento Config
+      operationId: updateConfig
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConfigDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Config not found
+
+components:
+  schemas:
+    AutomezzoDTO:
+      type: object
+      properties:
+        numero:
+          type: integer
+          format: int32
+        marca:
+          type: string
+        modello:
+          type: string
+        targa:
+          type: string
+        identificativo:
+          type: string
+        tipo_veicolo:
+          $ref: '#/components/schemas/TipoVeicoliDTO'
+        patente_richiesta:
+          $ref: '#/components/schemas/PatenteDTO'
+        permessi:
+          type : boolean
+        satellitare:
+          type: boolean
+    TipoVeicoliDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        key:
+          type: string
+        value:
+          type: string
+
+    ManutenzioneDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        quantita:
+          type: integer
+          format: int32
+        importo:
+          type: integer
+          format: int64
+        tipoDocumento:
+          type : string
+        numeroDocumento:
+          type: string
+    AssicurazioneDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        numero_polizza:
+          type: string
+        carroAttrezzi:
+          type: string
+        importo:
+          type: integer
+          format: int32
+        numero_automezzo:
+          type: integer
+          format: int32
+        compagni_assicurativa:
+          $ref: '#/components/schemas/CompagniaAssicurativaDTO'
+        data_inizio:
+          type: string
+          format: date-time
+        data_fine:
+          type: string
+          format: date-time
+        validità:
+          type: boolean
+        soccorso_stradale:
+          type: boolean
+        documentId:
+          type: string
+    RevisioneDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        automezzo_id:
+          type: integer
+          format: int32
+        esito:
+          type: boolean
+        eseguita:
+          type: boolean
+        data_esguita:
+          type: string
+        data_scadenza:
+          type: string
+        checkMail:
+          type: boolean
+        chilometri:
+          type: number
+    CompagniaAssicurativaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nomeCompagnia:
+          type: string
+        referente:
+          type: string
+        telefono:
+          type: string
+        indirizzo:
+          type: string
+    AziendaMeccanicaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nomeAzienda:
+          type: string
+        referente:
+          type: string
+        telefono:
+          type: string
+        indirizzo:
+          type: string
+        piva:
+          type: string
+    PatenteDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        codice_patente:
+          type: string
+    PercorsoSearchDTO:
+      type: object
+      properties:
+        automezzo:
+          type: integer
+        autista:
+          type: integer
+        data :
+          type: string
+          format: date
+    AutistaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        cognome:
+          type: string
+        telefono:
+          type: string
+        patenti:
+          type: array
+          items:
+            $ref: '#/components/schemas/PatenteDTO'
+
+
+    ConfigDTO:
+      type: object
+      properties:
+        key:
+          type: string
+        nome:
+          type: string
+        valore:
+          type: string
+        descrizione:
+          type: string
+        isBoolean:
+          type: boolean
+
+    DocumentDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        tipo:
+          type: string
+        file:
+          type: string
+          format: binary
+    AnagraficaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        descrizione:
+          type: string
+        sigla:
+          type: string
