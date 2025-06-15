@@ -7,6 +7,7 @@ import com.geolocalizzazione.geolocalizzazione.constant.GeocodingConstant;
 import com.geolocalizzazione.geolocalizzazione.entity.TipoVeicolo;
 import com.geolocalizzazione.geolocalizzazione.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ import java.util.Map;
 
 @Service
 public class GeocodingService {
+    @Value("${valhalla.url}")
+    private String url;
 
     @Autowired
     private WebClient webClient;
@@ -27,7 +30,7 @@ public class GeocodingService {
         public PercorsoDTO calcolaPercorso(List<String> points, TipoVeicolo tipoVeicolo, boolean percorso) {
 
             try {
-                webClient = WebClient.create("http://127.0.0.1:8002");
+                webClient = WebClient.create(url);
                 String veicolo="";
                 if( tipoVeicolo.getKey().equalsIgnoreCase(GeocodingConstant.AUTO) &&  Boolean.FALSE.equals(percorso)){
                     veicolo = GeocodingConstant.AUTO_SHORTER;
