@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GeocodingService {
@@ -50,12 +47,23 @@ public class GeocodingService {
                         })
                         .toList();
 
+                Map<String, Object> dateTime = new HashMap<>();
+                dateTime.put("type",1);
+                dateTime.put("value", new Date());
+
+                Map<String, Map<String,Boolean>> costingOption = new HashMap<>();
+                Map<String,Boolean> traffic= new HashMap<>();
+                traffic.put("use_traffic",true);
+                costingOption.put(veicolo,traffic);
+
                 Map<String, Object> requestBody = Map.of(
                         "locations", locations,
                         "costing", veicolo,
                         "directions_options", Map.of("units", "kilometers", "language", "it-IT"),
                         "avoid_features", List.of("highways"),
-                        "source", "first"
+                        "source", "first",
+                        "date_time", dateTime,
+                        "costing_options",costingOption
                 );
 
 

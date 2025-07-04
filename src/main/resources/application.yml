@@ -33,8 +33,18 @@ springdoc:
   api-docs:
     enabled: true
 
+manutenzione:
+  url: http://127.0.0.1:8080
+
+ManutenzioneApi:
+  automezzoById: "${manutenzione.url}/Automezzo/"
+  autistaById: "${manutenzione.url}/Autista/"
+
+
 valhalla:
   url: http://127.0.0.1:8002
 paj-gps:
+  url: https://connect.paj-gps.de
+
   email: alexferrara74@gmail.com
-  password:
+  password: Cavese1919@

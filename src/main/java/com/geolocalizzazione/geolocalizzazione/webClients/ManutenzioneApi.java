@@ -1,17 +1,27 @@
 package com.geolocalizzazione.geolocalizzazione.webClients;
 
+import com.manutenzione.model.AutistaDTO;
 import com.manutenzione.model.AutomezzoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 
 @Service
 public class ManutenzioneApi {
+
+    @Value("${ManutenzioneApi.automezzoById}")
+    private String automezzoById;
+    @Value("${ManutenzioneApi.autistaById}")
+    private String autistaById;
+
 
     @Autowired
     private WebClient webClient;
@@ -19,9 +29,9 @@ public class ManutenzioneApi {
     public AutomezzoDTO getAutomezzoById(Integer id) {
         try {
             String jwt = getJwtFromRequest();
-
+            String url = automezzoById + "/" + id;  // concatena l'id
             return webClient.get()
-                    .uri("http://127.0.0.1:8080/Automezzo/{id}", id)
+                    .uri(url, id)
                     .header("Authorization", "Bearer " + jwt)
                     .retrieve()
                     .bodyToMono(AutomezzoDTO.class)
@@ -31,6 +41,24 @@ public class ManutenzioneApi {
             return null;
         }
     }
+
+    public AutistaDTO getAutistaById(Integer id) {
+        try {
+            String jwt = getJwtFromRequest();
+            String url = autistaById + "/" + id;  // concatena l'id
+
+            return webClient.get()
+                    .uri(url, id)
+                    .header("Authorization", "Bearer " + jwt)
+                    .retrieve()
+                    .bodyToMono(AutistaDTO.class)
+                    .block();
+        } catch (Exception ex) {
+            // log exception
+            return null;
+        }
+    }
+
 
     private String getJwtFromRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

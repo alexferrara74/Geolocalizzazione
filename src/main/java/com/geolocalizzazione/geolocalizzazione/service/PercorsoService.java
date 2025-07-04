@@ -13,6 +13,7 @@ import com.geolocalizzazione.geolocalizzazione.mapper.PercorsoMapper;
 import com.geolocalizzazione.geolocalizzazione.repository.*;
 import com.geolocalizzazione.geolocalizzazione.webClients.GeocodingService;
 import com.geolocalizzazione.geolocalizzazione.webClients.ManutenzioneApi;
+import com.manutenzione.model.AutistaDTO;
 import com.manutenzione.model.AutomezzoDTO;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
@@ -116,7 +117,7 @@ public class PercorsoService {
             GenerazionePercorsoDTO gpd = new GenerazionePercorsoDTO();
             gpd.setPercorso(percorsoMapper.mapPercorsoToPercorsoDto(pr));
             gpd.setAutomezzo(numeroAutomezzo);
-            gpd.setAutista(filtri.getAutista());
+            gpd.setAutista(pr.getIdAutista());
             response.add(gpd);
         }
 

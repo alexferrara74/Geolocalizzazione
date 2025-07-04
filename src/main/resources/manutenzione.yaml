@@ -25,6 +25,8 @@ tags:
     description: Operations about patente
   - name: Documenti
     description: Gestione dei file pfd
+  - name: ChatBot
+    description: collegamento con il cahtBot
   - name: Config
     description: update delle configurazioni
 paths:
@@ -237,6 +239,32 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Automezzo not found
+    put:
+      tags:
+        - Autista
+      summary: Modifica autista
+      description: Modifica autista
+      operationId: updateAutista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutistaDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutistaDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+
     get:
       tags:
         - Autista
@@ -258,7 +286,25 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Autisti not found
-
+  /Autista/{id}:
+    delete:
+      summary: Elimina un autista
+      description: Elimina un autista esistente in base all'ID
+      tags:
+        - Autista
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Austista eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Austista non trovato
   /Autista/patente:
     get:
       tags:
@@ -812,6 +858,32 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Config not found
+  /ChatBot:
+    post:
+      tags:
+        - ChatBot
+      summary: Domanda al chatBot
+      operationId: askChatBot
+      parameters:
+        - name: question
+          in: query
+          required: true
+          description: question
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: ChatBot not found
 
 components:
   schemas:
@@ -837,6 +909,8 @@ components:
           type : boolean
         satellitare:
           type: boolean
+        id_satellitare:
+          type: string
     TipoVeicoliDTO:
       type: object
       properties:
@@ -866,6 +940,10 @@ components:
           type : string
         numeroDocumento:
           type: string
+        numeroAutomezzo:
+          type: integer
+        idAzienda:
+          type: integer
     AssicurazioneDTO:
       type: object
       properties:
