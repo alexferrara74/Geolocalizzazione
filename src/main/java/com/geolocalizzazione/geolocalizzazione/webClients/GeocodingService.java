@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -49,7 +51,10 @@ public class GeocodingService {
 
                 Map<String, Object> dateTime = new HashMap<>();
                 dateTime.put("type",1);
-                dateTime.put("value", new Date());
+                // Formatta la data in ISO-8601 (es. "2025-07-04T09:00")
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                String formattedDate = LocalDateTime.now().format(formatter);
+                dateTime.put("value", formattedDate);
 
                 Map<String, Map<String,Boolean>> costingOption = new HashMap<>();
                 Map<String,Boolean> traffic= new HashMap<>();

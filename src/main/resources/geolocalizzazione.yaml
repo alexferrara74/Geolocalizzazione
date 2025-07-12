@@ -132,6 +132,41 @@ paths:
           description: unauthorized
         '404':
           description: Percorso non trovato
+  /Percorso/poi/consegna:
+    put:
+      summary: Indica se la consegna al Poi è stata effettuata
+      description: Indica se la consegna al Poi è stata effettuata
+      operationId: aggiornamentoConsegna
+      tags:
+        - Percorso
+      parameters:
+        - name: idPoi
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: idPercorso
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: consegnato
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: note
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Inserimento consegna avvenuto con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Percorso e/o Poi non trovato
   /Percorso/ricerca:
     post:
       tags:

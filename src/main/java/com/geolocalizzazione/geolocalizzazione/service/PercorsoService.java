@@ -42,12 +42,10 @@ public class PercorsoService {
 
     public PercorsoDTO createPercorso (List<PoiDTO> poiDTO, Integer idVeicolo, boolean veloce){
         PercorsoDTO response = new PercorsoDTO();
-
-
-          List<String> coordinateStrings = poiDTO.stream()
-                   .map(coord -> coord.getLatitudine() + "," + coord.getLongitudine()) // lon,lat
-                   .toList();
-          List<TipoVeicolo> tipiVeicoli = tipoVeicoliRepository.findAll();
+        List<String> coordinateStrings = poiDTO.stream()
+                .map(coord -> coord.getLatitudine() + "," + coord.getLongitudine()) // lon,lat
+                .toList();
+        List<TipoVeicolo> tipiVeicoli = tipoVeicoliRepository.findAll();
         response = geocodingService.calcolaPercorso(coordinateStrings, tipiVeicoli.get(0),veloce);
         return response;
     }
@@ -58,8 +56,8 @@ public class PercorsoService {
      * @return
      */
     @Transactional
-    public GenerazionePercorsoDTO savePercorso (@NonNull GenerazionePercorsoDTO percorso){
-        if ( percorso.getPercorso() == null || percorso.getPercorso().getPois() == null || percorso.getAutista() == null || percorso.getAutomezzo() == null
+    public GenerazionePercorsoDTO savePercorso (@NonNull GenerazionePercorsoDTO percorso) {
+        if ( percorso.getPercorso() == null || percorso.getPercorso().getPois() == null
             || percorso.getPercorso().getPoiPartenza() == null || percorso.getAutomezzo() == null
             || percorso.getAutista() == null) {
              throw new BadRequestException (ErrorConstant.BAD_REQUEST);
@@ -156,6 +154,11 @@ public class PercorsoService {
         });
         percorsorepository.saveAndFlush(percorso);
         percorsoPoiRepository.saveAllAndFlush(pois);
+    }
+
+    public void aggiornamentoConsegna(Integer idPoi,Integer idPercorso, boolean consegnato,String note){
+
+        
     }
 
 }
