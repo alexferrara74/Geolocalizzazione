@@ -23,6 +23,9 @@ public class Percorso {
     @Column(name = "id_punto_partenza")
     private Integer idPuntoPartenza;
 
+    @Column(name = "terminato")
+    private Boolean terminato;
+
     @Column(name = "distanza_percorsa")
     private Double distanzaPercorsa;
 
@@ -41,6 +44,9 @@ public class Percorso {
 
     @Column(name = "data_archiviazione")
     private Date dataArchiviazione;
+
+    @Column(name = "data_terminazione")
+    private Date dataTerminazione;
 
 
     // Getters e Setters
@@ -123,5 +129,21 @@ public class Percorso {
 
     public void setDataArchiviazione(Date dataArchiviazione) {
         this.dataArchiviazione = dataArchiviazione;
+    }
+
+    public Boolean getTerminato() {
+        return terminato;
+    }
+
+    public void setTerminato(Boolean terminazione) {
+        this.terminato = terminazione;
+    }
+
+    public Date getDataTerminazione() {
+        return dataTerminazione;
+    }
+
+    public void setDataTerminazione(Date dataTerminazione) {
+        this.dataTerminazione = dataTerminazione;
     }
 }

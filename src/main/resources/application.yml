@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8085
 
 # Configurazione delle API (URL del progetto)
 api:
@@ -45,6 +45,5 @@ valhalla:
   url: http://127.0.0.1:8002
 paj-gps:
   url: https://connect.paj-gps.de
-
   email: alexferrara74@gmail.com
   password: Cavese1919@

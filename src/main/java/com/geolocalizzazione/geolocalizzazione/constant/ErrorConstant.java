@@ -19,5 +19,11 @@ public class ErrorConstant {
     //DOCUMENTI
     public final static String DOCUMENT_NOT_FOUND="Nessun documento trovato";
 
+    //PERCORSO
+    public final static String PERCORSO_NOT_FOUND= "Percorso non trovato";
+    public final static String PERCORSO_TERMINATO= "Percorso non modificabile in quanto risulta terminato";
+    public final static String PERCORSO_NOT_ARCHIVIATO= "Percorso non archiviabile in quanto non risulta essere terminato";
+    public final static String PERCORSO_NOT_CLOSE= "Percorso non terminabile in quanto esistono delle consegne non gestite";
+
 
 }

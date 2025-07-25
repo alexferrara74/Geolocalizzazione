@@ -134,18 +134,18 @@ paths:
           description: Percorso non trovato
   /Percorso/poi/consegna:
     put:
-      summary: Indica se la consegna al Poi è stata effettuata
-      description: Indica se la consegna al Poi è stata effettuata
-      operationId: aggiornamentoConsegna
+      summary: Indica se è stata effettuata la consegna ad un Poi
+      description: Indica se è stata effettuata la consegna ad un Poi
+      operationId: aggiornaPoiConsegna
       tags:
         - Percorso
       parameters:
-        - name: idPoi
+        - name: idPercorso
           in: query
           required: true
           schema:
             type: integer
-        - name: idPercorso
+        - name: idPoi
           in: query
           required: true
           schema:
@@ -157,16 +157,36 @@ paths:
             type: boolean
         - name: note
           in: query
-          required: true
+          required: false
           schema:
             type: string
       responses:
         '200':
-          description: Inserimento consegna avvenuto con successo
+          description: Consegna segnata con successo
         '401':
           description: unauthorized
         '404':
-          description: Percorso e/o Poi non trovato
+          description: Percorso/Poi non trovato
+  /Percorso/{id}/termina:
+    put:
+      summary: Permette di effettuare la chiusura di un percorso dopo aver effettuato tutte le consegne.
+      description: Permette di effettuare la chiusura di un percorso
+      operationId: terminaPercorso
+      tags:
+        - Percorso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Consegna segnata con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Percorso/Poi non trovato
   /Percorso/ricerca:
     post:
       tags:
@@ -295,7 +315,10 @@ components:
         data :
           type: string
           format: date
-
+        terminati:
+          type: boolean
+      required:
+        - terminati
     GenerazionePercorsoDTO:
       type: object
       properties:
@@ -310,6 +333,7 @@ components:
         autista:
           type: integer
           format: int32
+
 
     PoiDTO:
       type: object
@@ -342,6 +366,8 @@ components:
         distance:
           type: number
           format: double
+        terminato:
+          type: boolean
         duration:
           type: number
           format: double

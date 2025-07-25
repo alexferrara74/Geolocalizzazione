@@ -455,6 +455,133 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Automezzo not found
+
+  /Revisione:
+    put:
+      tags:
+        - Revisione
+      summary: Aggiornamento revisione
+      description: Aggiornamento revisione
+      operationId: updateRevisione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevisioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevisioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Revisione not found
+    post:
+      tags:
+        - Revisione
+      summary: Inserimento nuova revisione
+      operationId: createRevisione
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevisioneDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Revisione not found
+    get:
+      tags:
+        - Revisione
+      summary: Leggi tutte le revisioni
+      operationId: getAllRevisioni
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RevisioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Revisione not found
+
+  /Revisione/{id}:
+    get:
+      tags:
+        - Revisione
+      summary: Recupera revisione tramite id
+      operationId: getRevisioneById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevisioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Revisione not found
+
+  /Revisione/Automezzo/{numero}:
+    get:
+      tags:
+        - Revisione
+      summary: Recupera revisione collegate all'automezzo
+      operationId: getRevisioneByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RevisioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Revisione not found
+
+
   /Patente:
     get:
       tags:
@@ -928,22 +1055,22 @@ components:
         id:
           type: integer
           format: int32
-        nome:
+        descrizioneIntervento:
           type: string
-        quantita:
-          type: integer
-          format: int32
         importo:
           type: integer
           format: int64
-        tipoDocumento:
-          type : string
+        referente:
+          type: string
         numeroDocumento:
           type: string
         numeroAutomezzo:
           type: integer
         idAzienda:
           type: integer
+        dataIntervento:
+          type: string
+          format: data
     AssicurazioneDTO:
       type: object
       properties:

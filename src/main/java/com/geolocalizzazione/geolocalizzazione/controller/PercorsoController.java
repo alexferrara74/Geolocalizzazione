@@ -49,9 +49,17 @@ public class PercorsoController implements PercorsoApi {
     }
 
     @Override
-    public ResponseEntity<Void> aggiornamentoConsegna(Integer idPoi, Integer idPercorso, Boolean consegnato, String note) {
-        percorsoService.aggiornamentoConsegna(idPoi,idPercorso,consegnato,note);
-        return ResponseEntity.ok().build();    }
+    public ResponseEntity<Void> aggiornaPoiConsegna(Integer idPercorso, Integer idPoi, Boolean consegnato, String note) {
+       percorsoService.aggiornamentoConsegna(idPoi,idPercorso,consegnato,note);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> terminaPercorso(Integer id) {
+        percorsoService.terminaPercorso(id);
+        return ResponseEntity.ok().build();
+
+    }
 }
 
 

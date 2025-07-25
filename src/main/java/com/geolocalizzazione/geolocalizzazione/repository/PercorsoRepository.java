@@ -16,8 +16,9 @@ public interface PercorsoRepository extends JpaRepository<Percorso, Integer> {
             " AND (:idAutista IS NULL OR p.idAutista = :idAutista) " +
             " AND  (:idAutomezzo IS NULL OR p.fkVeicolo = :idAutomezzo) " +
             " AND (:data IS NULL OR FUNCTION('DATE', p.dataCreazione) = :data) " +
+            " AND (:terminato IS NULL OR p.terminato= :terminato) " +
             " ORDER BY p.dataCreazione desc ")
-    List<Percorso> findByfilter(Integer idAutista, Integer idAutomezzo, LocalDate data);
+    List<Percorso> findByfilter(Integer idAutista, Integer idAutomezzo, LocalDate data, Boolean terminato);
 
     Percorso findByIdAndDataCancellazioneIsNullAndDataArchiviazioneIsNull(Integer id);
 }

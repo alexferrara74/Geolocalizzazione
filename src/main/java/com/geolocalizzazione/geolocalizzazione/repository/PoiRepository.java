@@ -12,7 +12,8 @@ public interface PoiRepository extends JpaRepository<Poi, Integer> {
     @Query(" SELECT p FROM Poi p " +
             " JOIN PercorsoPoi pp ON p.id = pp.fkPoi " +
             " WHERE pp.fkPercorso = :fkPercorso " +
-            " AND p.dataCancellazione IS NULL AND pp.dataCancellazione IS Null ")
+            " AND p.dataCancellazione IS NULL AND pp.dataCancellazione IS Null " +
+            " ORDER BY pp.ordine ASC ")
     List<Poi> findByFkPercorsoAndDataCancellazioneIsNull(Integer fkPercorso);
 
     Poi findByIdAndDataCancellazioneIsNull( Integer id);

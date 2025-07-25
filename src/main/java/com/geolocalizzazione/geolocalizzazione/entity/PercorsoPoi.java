@@ -21,6 +21,15 @@ public class PercorsoPoi {
     @Column(name = "ordine",nullable = false)
     private Integer ordine;
 
+    @Column(name = "consegnato",nullable = true)
+    private Boolean consegnato;
+
+    @Column(name = "note_consegna",nullable = true, length = 255)
+    private String noteConsegna;
+
+    @Column(name = "data_consegna",nullable = true)
+    private Date dataConsegna;
+
     @Column(name = "data_archiviazione",nullable = true)
     private Date dataArchiviazione;
 
@@ -84,5 +93,29 @@ public class PercorsoPoi {
 
     public void setDataCancellazione(Date dataCancellazione) {
         this.dataCancellazione = dataCancellazione;
+    }
+
+    public Boolean getConsegnato() {
+        return consegnato;
+    }
+
+    public void setConsegnato(Boolean consegnato) {
+        this.consegnato = consegnato;
+    }
+
+    public String getNoteConsegna() {
+        return noteConsegna;
+    }
+
+    public void setNoteConsegna(String noteConsegna) {
+        this.noteConsegna = noteConsegna;
+    }
+
+    public Date getDataConsegna() {
+        return dataConsegna;
+    }
+
+    public void setDataConsegna(Date dataConsegna) {
+        this.dataConsegna = dataConsegna;
     }
 }
