@@ -50,6 +50,7 @@ public class PercorsoMapper {
        response.setDataCreazione(percorso.getDataCreazione().toInstant()
                .atZone(ZoneId.systemDefault())
                .toLocalDate());
+
        return response;
    }
 }

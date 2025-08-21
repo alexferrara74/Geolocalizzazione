@@ -13,6 +13,7 @@ public interface PercorsoRepository extends JpaRepository<Percorso, Integer> {
             " JOIN Automezzo a ON a.numero = p.fkVeicolo " +
             " JOIN Autista at ON at.id = p.idAutista " +
             " WHERE p.dataCancellazione IS NULL " +
+            " AND p.dataArchiviazione IS NULL " +
             " AND (:idAutista IS NULL OR p.idAutista = :idAutista) " +
             " AND  (:idAutomezzo IS NULL OR p.fkVeicolo = :idAutomezzo) " +
             " AND (:data IS NULL OR FUNCTION('DATE', p.dataCreazione) = :data) " +

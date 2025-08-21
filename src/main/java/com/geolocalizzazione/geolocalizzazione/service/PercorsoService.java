@@ -100,26 +100,23 @@ public class PercorsoService {
         List<GenerazionePercorsoDTO> response = new ArrayList<>();
         List<Percorso>percorsi = new ArrayList<>();
 
-        if(Boolean.TRUE.equals(filtri.getTerminati())){
-            percorsoRepository.findByfilter (filtri.getAutista(),filtri.getAutomezzo(),filtri.getData(), Boolean.TRUE);
-        } else {
-            percorsoRepository.findByfilter (filtri.getAutista(),filtri.getAutomezzo(),filtri.getData(), null);
+        if(filtri.getAutomezzo()!=null) {
+            AutomezzoDTO automezzo =  manutenzioneApi.getAutomezzoById(filtri.getAutomezzo());
+            if (automezzo == null ){
+                throw new NotFoundException(ErrorConstant.BAD_REQUEST);
+            }
         }
 
-//        if(filtri.getAutomezzo()!=null) {
-//           AutomezzoDTO automezzo =  manutenzioneApi.getAutomezzoById(filtri.getAutomezzo());
-//            if (automezzo == null ){
-//                throw new NotFoundException(ErrorConstant.BAD_REQUEST);
-//            }
-//        }
+        if(Boolean.TRUE.equals(filtri.getTerminati())){
+            percorsi= percorsoRepository.findByfilter (filtri.getAutista(),filtri.getAutomezzo(),filtri.getData(), Boolean.TRUE);
+        } else {
+            percorsi =percorsoRepository.findByfilter (filtri.getAutista(),filtri.getAutomezzo(),filtri.getData(), null);
+        }
 
         for (Percorso pr : percorsi){
-            if(filtri.getAutomezzo() == null ){
-                AutomezzoDTO automezzo =  manutenzioneApi.getAutomezzoById(pr.getFkVeicolo());
-            }
             GenerazionePercorsoDTO gpd = new GenerazionePercorsoDTO();
             gpd.setPercorso(percorsoMapper.mapPercorsoToPercorsoDto(pr));
-            gpd.setAutomezzo(filtri.getAutomezzo());
+            gpd.setAutomezzo(pr.getFkVeicolo());
             gpd.setAutista(pr.getIdAutista());
             response.add(gpd);
         }

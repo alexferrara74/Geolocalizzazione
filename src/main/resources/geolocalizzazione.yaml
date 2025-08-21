@@ -317,8 +317,6 @@ components:
           format: date
         terminati:
           type: boolean
-      required:
-        - terminati
     GenerazionePercorsoDTO:
       type: object
       properties:
