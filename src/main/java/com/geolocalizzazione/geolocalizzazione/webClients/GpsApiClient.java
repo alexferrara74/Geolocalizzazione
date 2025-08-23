@@ -2,14 +2,21 @@ package com.geolocalizzazione.geolocalizzazione.webClients;
 
 import com.example.model.PercorsoDTO;
 import com.example.model.PoiDTO;
+import com.example.model.SatellitareNotificaDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.geolocalizzazione.geolocalizzazione.mapper.NotificheMapper;
+import com.geolocalizzazione.geolocalizzazione.polling.SatellitarePollingJob;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.MediaType;
+import reactor.core.publisher.Mono;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -28,7 +35,8 @@ public class GpsApiClient {
 
     @Autowired
     private WebClient webClient;
-
+    @Autowired
+    private NotificheMapper notificheMapper;
 
     public String loginPAJ() {
        try {
@@ -159,6 +167,56 @@ public class GpsApiClient {
 
         return percorsoDTO;
     }
+
+    public List<SatellitareNotificaDTO> getNotificheVeicolo () {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String token = loginPAJ();
+        WebClient webClient = WebClient.create(url);
+        String path = "/api/v1/notifications";
+
+        String urlNotifiche = UriComponentsBuilder.fromHttpUrl(url)
+                .path(path)
+                .toUriString();
+        List<SatellitareNotificaDTO> responseList = webClient.get()
+                .uri(urlNotifiche)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(json -> notificheMapper.mapFromJson(json))
+                .block(); // <- blocca fino al completamento
+
+
+        log.info("Trovate {} notifiche", responseList.size());
+
+        return responseList;
+    }
+
+    public void deleteNotificheVeicoli (String idDevice) {
+        ObjectMapper mapper = new ObjectMapper();
+    try {
+        String token = loginPAJ();
+        WebClient webClient = WebClient.create(url);
+        String path = "/api/v1/notifications/markReadByDevice/"+ idDevice;
+
+        String urlNotifiche = UriComponentsBuilder.fromHttpUrl(url)
+                .path(path)
+                .queryParam("isRead", "1")
+                .toUriString();
+        webClient.put()
+                .uri(urlNotifiche)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block(); // <- blocca fino al completamento
+
+    }catch (Exception e){
+        log.error("Errore durante la lettura delle notifiche per il dispositivo con ID {}", idDevice);
+    }
+    }
+
 
 
 }
