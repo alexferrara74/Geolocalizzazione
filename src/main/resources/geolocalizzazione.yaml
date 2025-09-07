@@ -379,76 +379,66 @@ components:
           type: integer
           format: int32
 
+    NotificheDTO:
+      type: object
+      properties:
+        numero_automezzo:
+          type: integer
+          format: int64
+        targa_automezzo:
+          type: string
+        alert:
+          type: array
+          items:
+            $ref: '#/components/schemas/SatellitareNotificaDTO'
+
     SatellitareNotificaDTO:
       type: object
       properties:
         id:
           type: integer
-          example: 2
         iddevice:
           type: integer
-          example: 1
         name:
           type: string
-          nullable: true
         icon:
           type: string
-          example: icon-info
         bezeichnung:
           type: string
-          example: Stromunterbrechnungs-Alarm
         meldung:
           type: string
-          nullable: true
-          example: Ihr FINDER hat den festgelegten Radius befahren.
         meldungtyp:
           type: integer
-          example: 3
         dateunix:
           type: integer
-          example: 12121212
         lat:
           type: number
           format: double
-          example: 12.12
         lng:
           type: number
           format: double
-          example: 12.12
         isread:
           type: integer
-          example: 0
         imei:
           type: string
-          nullable: true
-          example: "12121212"
         speed:
           type: number
           format: double
-          nullable: true
-          example: 0
         speederlaubt:
           type: number
           format: double
-          nullable: true
         radiusin:
           type: integer
-          example: 1
         radiusout:
           type: integer
-          example: 0
         zuendon:
           type: integer
-          example: 0
         zuendoff:
           type: integer
-          example: 0
         email:
           type: string
-          nullable: true
         push:
           type: integer
-          example: 0
 
     PercorsoDTO:
       type: object

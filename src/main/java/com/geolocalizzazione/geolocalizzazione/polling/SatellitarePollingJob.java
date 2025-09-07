@@ -1,5 +1,6 @@
 package com.geolocalizzazione.geolocalizzazione.polling;
 
+import com.example.model.NotificheDTO;
 import com.example.model.SatellitareNotificaDTO;
 import com.geolocalizzazione.geolocalizzazione.webClients.GpsApiClient;
 import com.geolocalizzazione.geolocalizzazione.webSocket.WebSocketNotifiche;
@@ -21,7 +22,7 @@ public class SatellitarePollingJob {
 
     @Scheduled(fixedDelay = 10000)
     public void poll() {
-      List<SatellitareNotificaDTO> notifiche = gpsApiClient.getNotificheVeicolo();
+      List<NotificheDTO> notifiche = gpsApiClient.getNotificheVeicolo();
       log.info("Eseguita ricerca notifiche per i veicoli, trovate {} notifiche ", notifiche.size());
       webSocketNotifiche.broadcast(notifiche);
     }

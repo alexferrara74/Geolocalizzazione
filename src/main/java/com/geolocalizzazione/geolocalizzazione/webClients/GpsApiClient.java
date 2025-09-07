@@ -1,5 +1,6 @@
 package com.geolocalizzazione.geolocalizzazione.webClients;
 
+import com.example.model.NotificheDTO;
 import com.example.model.PercorsoDTO;
 import com.example.model.PoiDTO;
 import com.example.model.SatellitareNotificaDTO;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.geolocalizzazione.geolocalizzazione.mapper.NotificheMapper;
 import com.geolocalizzazione.geolocalizzazione.polling.SatellitarePollingJob;
+import com.geolocalizzazione.geolocalizzazione.utils.ManutenzioneApiUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,9 @@ public class GpsApiClient {
     private WebClient webClient;
     @Autowired
     private NotificheMapper notificheMapper;
+    @Autowired
+    private ManutenzioneApiUtils manutenzioneApiUtils;
+
 
     public String loginPAJ() {
        try {
@@ -168,7 +173,7 @@ public class GpsApiClient {
         return percorsoDTO;
     }
 
-    public List<SatellitareNotificaDTO> getNotificheVeicolo () {
+    public List<NotificheDTO> getNotificheVeicolo () {
         ObjectMapper mapper = new ObjectMapper();
 
         String token = loginPAJ();
@@ -190,7 +195,7 @@ public class GpsApiClient {
 
         log.info("Trovate {} notifiche", responseList.size());
 
-        return responseList;
+       return manutenzioneApiUtils.recuperaVeicoloAssociato(responseList);
     }
 
     public void deleteNotificheVeicoli (String idDevice) {

@@ -23,12 +23,15 @@ tags:
     description: Operations about autista
   - name: Patente
     description: Operations about patente
+  - name: Permessi
+    description: Permessi per ogni veicolo
   - name: Documenti
     description: Gestione dei file pfd
   - name: ChatBot
     description: collegamento con il cahtBot
   - name: Config
     description: update delle configurazioni
+
 paths:
   /Automezzo:
     put:
@@ -104,15 +107,71 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Automezzo not found
-  /Automezzo/{id}:
+  /Automezzo/targa/{targa}:
     get:
       tags:
         - Automezzo
-      summary: Leggi tutti gli automezzi
-      description: Leggi tutti gli automezzi
-      operationId: getAutomezzoById
+      summary: Recupera Automezzo in base alla targa fornita
+      description: Recupera Automezzo in base alla targa fornita
+      operationId: getAutomezzoByTarga
       parameters:
-        - name: id
+        - name: targa
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Automezzo/satellitare:
+    get:
+      tags:
+        - Automezzo
+      summary: Recupera Automezzo in base al satellitare
+      description: Recupera Automezzo in base al satellitare
+      operationId: getAutomezzoByIdSatellitare
+      parameters:
+        - name: idsSatellitare
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutomezzoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Automezzo not found
+  /Automezzo/{numero}:
+    get:
+      tags:
+        - Automezzo
+      summary: Recupera automezzo in base al numero identificativo
+      description: Recupera automezzo in base al numero identificativo
+      operationId: getAutomezzoByNumero
+      parameters:
+        - name: numero
           in: path
           required: true
           schema:
@@ -137,7 +196,7 @@ paths:
       description: Archivia automezzo
       operationId: archiviaAutomezzoById
       parameters:
-        - name: id
+        - name: numero
           in: path
           required: true
           schema:
@@ -158,10 +217,11 @@ paths:
     delete:
       summary: Elimina un automezzo
       description: Elimina un automezzo esistente in base all'ID
+      operationId: deleteAutomezzo
       tags:
         - Automezzo
       parameters:
-        - name: id
+        - name: numero
           in: path
           required: true
           schema:
@@ -290,6 +350,7 @@ paths:
     delete:
       summary: Elimina un autista
       description: Elimina un autista esistente in base all'ID
+      operationId: deleteAutista
       tags:
         - Autista
       parameters:
@@ -309,8 +370,8 @@ paths:
     get:
       tags:
         - Autista
-      summary: Leggi tutti gli autisti
-      description: Leggi tutti gli autisti
+      summary: Leggi gli autisti in base alla patente
+      description: Leggi gli autisti in base alla patente
       operationId: getAutistiByPatente
       parameters:
         - name: idPatente
@@ -382,7 +443,7 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Automezzo not found
+          description: Assicurazione not found
     get:
       tags:
         - Assicurazione
@@ -402,8 +463,28 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Automezzo not found
+          description: Assicurazione not found
   /Assicurazione/{id}:
+    delete:
+      summary: Elimina Assicurazione
+      description: Elimina un assicurazione esistente in base all'ID
+      operationId: deleteAssicurazione
+      tags:
+        - Assicurazione
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Assicurazione eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Assiurazione non trovato
+
     get:
       tags:
         - Assicurazione
@@ -427,7 +508,7 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Automezzo not found
+          description: Assiurazione not found
   /Assicurazione/Automezzo/{numero}:
     get:
       tags:
@@ -454,7 +535,35 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Automezzo not found
+          description: Assicurazione not found
+
+  /Assicurazione/Sacdenza/Automezzo/{numero}:
+    get:
+      tags:
+        - Assicurazione
+      summary: Recupera le assicurazioni collegate all'automezzo in scadenza
+      operationId: getAssicurazioneScadenzaByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssicurazioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Assicurazione not found
 
   /Revisione:
     put:
@@ -499,7 +608,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AssicurazioneDTO'
+                $ref: '#/components/schemas/RevisioneDTO'
         '401':
           description: unauthorized
         '400':
@@ -553,6 +662,26 @@ paths:
         '404':
           description: Revisione not found
 
+    delete:
+      summary: Elimina Revisione
+      description: Elimina una revisione esistente in base all'ID
+      operationId: deleteRevisione
+      tags:
+        - Revisione
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Revisione eliminata con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Revisione non trovata
+
   /Revisione/Automezzo/{numero}:
     get:
       tags:
@@ -580,6 +709,34 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Revisione not found
+
+  /Revisione/Scadenza/Automezzo/{numero}:
+    get:
+      tags:
+        - Revisione
+      summary: Recupera revisioni collegate all'automezzo in scadenza non rinnovate
+      operationId: getRevisioneScadenzaByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RevisioneDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Assicurazione not found
 
 
   /Patente:
@@ -675,6 +832,28 @@ paths:
         '404':
           description: Compagnia not found
 
+  /CompagniaAssicurativa/{id}:
+    delete:
+      summary: Elimina Compagnia Assicurativa
+      description: Elimina una Compagnia Assicurativa esistente in base all'ID
+      operationId: deleteCompagniaAssicurativa
+      tags:
+        - Compagnia Assicurativa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Compagnia Assicurativa eliminata con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Compagnia Assicurativa non trovata
+
+
   /AziendaMeccanica:
     put:
       tags:
@@ -744,7 +923,26 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Azienda not found
-
+  /AziendaMeccanica/{id}:
+    delete:
+      summary: Elimina Azienda Meccanica
+      description: Elimina una Azienda Meccanica esistente in base all'ID
+      operationId: deleteAziendaMeccanica
+      tags:
+        - Azienda Meccanica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Azienda Meccanica eliminata con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Azienda Meccanica non trovata
 
   /Manutenzione:
     put:
@@ -818,6 +1016,27 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Manutenzione not found
+
+  /Manutenzione/{id}:
+    delete:
+      summary: Elimina Manutenzione
+      description: Elimina una manutenzione esistente in base all'ID
+      operationId: deleteManutenzione
+      tags:
+        - Manutenzione
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Manutenzione eliminato con successo
+        '401':
+          description: unauthorized
+        '404':
+          description: Manutenzione non trovato
 
   /Manutenzione/Automezzo/{numero}:
     get:
@@ -933,6 +1152,107 @@ paths:
           description: Documento non trovato
         '500':
           description: Errore interno
+  /Permessi:
+    post:
+      tags:
+        - Permessi
+      summary: Inserimento nuovo permesso
+      description: Inserimento nuovo permesso
+      operationId: createPermesso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermessoDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermessoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Permesso not found
+    get:
+      tags:
+        - Permessi
+      summary: Leggi permessi di un veicolo
+      description: Leggi permessi di un veicolo
+      operationId: getPermessiByNumero
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: numero del veicolo
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermessoDTO'
+        '404':
+          description: Permesso non trovato
+        '500':
+          description: Errore interno
+
+    delete:
+      tags:
+        - Permessi
+      summary: Elimina permesso
+      description: Elimina un permesso
+      operationId: deletePermesso
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID del permesso da eliminare
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Permesso eliminato con successo
+        '404':
+          description: Permesso non trovato
+        '500':
+          description: Errore interno
+
+  /Permessi/Scadenza/Automezzo/{numero}:
+    get:
+      tags:
+        - Permessi
+      summary: Recupera i permessi scaduti collegate all'automezzo e non rinnovati
+      operationId: getPermessiScadenzaByNumero
+      parameters:
+        - name: numero
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermessoDTO'
+        '401':
+          description: unauthorized
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Assicurazione not found
 
   /config:
     get:
@@ -1002,7 +1322,7 @@ paths:
         '200':
           description: OK
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
         '401':
@@ -1107,17 +1427,21 @@ components:
         id:
           type: integer
           format: int32
+        codice_certificato:
+          type: string
         automezzo_id:
           type: integer
           format: int32
-        esito:
-          type: boolean
+        note_esito:
+          type: string
         eseguita:
           type: boolean
-        data_esguita:
+        data_revisione:
           type: string
+          format: date-time
         data_scadenza:
           type: string
+          format: date-time
         checkMail:
           type: boolean
         chilometri:
@@ -1201,6 +1525,58 @@ components:
           type: string
         isBoolean:
           type: boolean
+
+    PermessoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        descrizione:
+          type: string
+        numeroVeicolo:
+          type: integer
+        dataScadenza:
+          type: string
+          format: date-time
+        dataInizio:
+          type: string
+          format: date-time
+        codicePermesso:
+          type: string
+
+    ScadenzaDTO:
+      type: object
+      description: Statistiche e dettagli di una categoria di scadenze
+      properties:
+        scadute:
+          type: integer
+          description: Numero di elementi scaduti
+        inScadenza30:
+          type: integer
+          description: Numero di elementi in scadenza entro 30 giorni
+        inScadenza60:
+          type: integer
+          description: Numero di elementi in scadenza entro 60 giorni
+        dettagliScadute:
+          type: array
+          items:
+            $ref: '#/components/schemas/DettaglioScadenzaDTO'
+
+    DettaglioScadenzaDTO:
+      type: object
+      description: Dettaglio di un elemento scaduto
+      properties:
+        veicolo:
+          type: string
+          description: Targa o identificativo del veicolo
+        dataScadenza:
+          type: string
+          format: date
+          description: Data di scadenza
+        info:
+          type: string
+          description: Informazioni aggiuntive (compagnia assicurativa, officina, ecc.)
+
 
     DocumentDTO:
       type: object

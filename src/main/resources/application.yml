@@ -39,6 +39,8 @@ manutenzione:
 ManutenzioneApi:
   automezzoById: "${manutenzione.url}/Automezzo/"
   autistaById: "${manutenzione.url}/Autista/"
+  automezzoByIdsSatellitare: "${manutenzione.url}/Automezzo/satellitare/"
+
 
 
 valhalla:

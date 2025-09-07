@@ -3,24 +3,31 @@ package com.geolocalizzazione.geolocalizzazione.webClients;
 import com.manutenzione.model.AutistaDTO;
 import com.manutenzione.model.AutomezzoDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
+@Log4j2
 public class ManutenzioneApi {
 
     @Value("${ManutenzioneApi.automezzoById}")
     private String automezzoById;
     @Value("${ManutenzioneApi.autistaById}")
     private String autistaById;
+    @Value("${ManutenzioneApi.automezzoByIdsSatellitare}")
+    private String automezzoByIdsSatellitare;
+
 
 
     @Autowired
@@ -54,11 +61,33 @@ public class ManutenzioneApi {
                     .bodyToMono(AutistaDTO.class)
                     .block();
         } catch (Exception ex) {
-            // log exception
             return null;
         }
     }
 
+    public List<AutomezzoDTO> getAutomezzoByIdsSatellitare(List<String> idsSatellitare) {
+        try {
+            WebClient webClient = WebClient.builder()
+                    .baseUrl("http://127.0.0.1:8080") // <-- host e porta corretti
+                    .build();
+
+            String jwt = getJwtFromRequest();
+
+            return webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/Automezzo/satellitare")
+                            .queryParam("idsSatellitare", idsSatellitare)
+                            .build())
+                    .header("Authorization", "Bearer " + jwt)
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<List<AutomezzoDTO>>() {})
+                    .block();
+
+        } catch (Exception ex) {
+            log.error("errore nel recupero dei veicoli :{}", ex);
+            return new ArrayList<>();
+        }
+    }
 
     private String getJwtFromRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
