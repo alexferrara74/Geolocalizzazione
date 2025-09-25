@@ -25,7 +25,15 @@ public class GpsController implements GpsApi {
 
     @Override
     public ResponseEntity<PercorsoDTO> getPercorsoByDate(String idDispositivo, OffsetDateTime dateStart, OffsetDateTime dateEnd) {
-       PercorsoDTO response = gpsService.recuperaPercorsoVeicolo(idDispositivo,dateStart,dateEnd);
-       return ResponseEntity.ok(response);
+        PercorsoDTO response = gpsService.recuperaPercorsoVeicolo(idDispositivo, dateStart, dateEnd);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<Void> checkIniziale(String targa, Long codice) {
+        gpsService.checkIniziale(targa, codice);
+        return ResponseEntity.ok().build();
     }
 }
+
+

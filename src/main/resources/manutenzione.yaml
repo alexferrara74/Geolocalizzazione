@@ -31,6 +31,8 @@ tags:
     description: collegamento con il cahtBot
   - name: Config
     description: update delle configurazioni
+  - name: User
+    description: Gestione
 
 paths:
   /Automezzo:
@@ -1091,7 +1093,11 @@ paths:
                   description: ID dell'entità a cui è collegato il documento
                 tipo:
                   type: string
-                  enum: [ASSICURAZIONE, REVISIONE, MANUTENZIONE, PERMESSO]
+                  enum:
+                    - ASSICURAZIONE
+                    - REVISIONE
+                    - MANUTENZIONE
+                    - PERMESSO
                   description: Tipo di documento associato
               required:
                 - file
@@ -1391,6 +1397,8 @@ components:
         dataIntervento:
           type: string
           format: data
+        documentId:
+          type: string
     AssicurazioneDTO:
       type: object
       properties:
@@ -1446,6 +1454,8 @@ components:
           type: boolean
         chilometri:
           type: number
+        documentId:
+          type: string
     CompagniaAssicurativaDTO:
       type: object
       properties:
@@ -1542,6 +1552,8 @@ components:
           type: string
           format: date-time
         codicePermesso:
+          type: string
+        documentId:
           type: string
 
     ScadenzaDTO:

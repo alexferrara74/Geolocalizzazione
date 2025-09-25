@@ -1,5 +1,6 @@
 package com.geolocalizzazione.geolocalizzazione.webClients;
 
+import com.geolocalizzazione.geolocalizzazione.utils.JwtUtils;
 import com.manutenzione.model.AutistaDTO;
 import com.manutenzione.model.AutomezzoDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,19 +33,24 @@ public class ManutenzioneApi {
 
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public AutomezzoDTO getAutomezzoById(Integer id) {
         try {
             String jwt = getJwtFromRequest();
-            String url = automezzoById + "/" + id;  // concatena l'id
+            if (jwt == null) {
+                jwt = jwtUtils.generateToken("admin");
+            }
+            String url = automezzoById;  // concatena l'id
             return webClient.get()
-                    .uri(url, id)
+                    .uri(url + "{numero}", id)
                     .header("Authorization", "Bearer " + jwt)
                     .retrieve()
                     .bodyToMono(AutomezzoDTO.class)
                     .block();
         } catch (Exception ex) {
-            // log exception
+            log.error("Impossibile recuperare l'automezzo con id {}", id);
             return null;
         }
     }
